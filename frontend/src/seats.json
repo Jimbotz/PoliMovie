@@ -1,0 +1,49 @@
+[
+    {
+      "movieId": 1,
+      "rows": [
+        {
+          "row": "A",
+          "seats": [
+            { "id": "A1", "number": 1, "isOccupied": false, "isDisabled": false },
+            { "id": "A2", "number": 2, "isOccupied": true, "isDisabled": false },
+            { "id": "A3", "number": 3, "isOccupied": true, "isDisabled": false },
+            { "id": "A4", "number": 4, "isOccupied": true, "isDisabled": false }
+            
+          ]
+        },
+        {
+          "row": "B",
+          "seats": [
+            { "id": "B1", "number": 1, "isOccupied": false, "isDisabled": false }
+            
+          ]
+        }
+      ]
+    },
+    {
+      "movieId": 2,
+      "rows": [
+        {
+            "row": "A",
+            "seats": [
+              { "id": "A1", "number": 1, "isOccupied": false, "isDisabled": false },
+              { "id": "A2", "number": 2, "isOccupied": true, "isDisabled": false },
+              { "id": "A3", "number": 3, "isOccupied": true, "isDisabled": false },
+              { "id": "A4", "number": 4, "isOccupied": true, "isDisabled": false }
+              
+            ]
+          },
+          {
+            "row": "B",
+            "seats": [
+              { "id": "B1", "number": 1, "isOccupied": false, "isDisabled": false },
+              { "id": "B2", "number": 2, "isOccupied": false, "isDisabled": false },
+              { "id": "B3", "number": 3, "isOccupied": false, "isDisabled": false }
+              
+            ]
+          }
+      ]
+    }
+  ]
+  

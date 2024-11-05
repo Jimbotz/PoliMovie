@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import seatsData from "./seats.json"; // Ruta ajustada
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import {
@@ -19,7 +20,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { ShoppingCart, Clock, Calendar } from "lucide-react";
-//import './App.css'
+import { Usuario } from "./usuario";
 
 const movies = [
   {
@@ -60,18 +61,7 @@ const movies = [
   },
 ];
 
-const generateSeats = () => {
-  const rows = "ABCDEF".split("");
-  return rows.map((row) => ({
-    row,
-    seats: Array.from({ length: 10 }, (_, i) => ({
-      id: `${row}${i + 1}`,
-      number: i + 1,
-      isOccupied: Math.random() < 0.2,
-      isDisabled: Math.random() < 0.05,
-    })),
-  }));
-};
+
 
 export default function App() {
   const [selectedMovie, setSelectedMovie] = useState(null);
@@ -80,7 +70,7 @@ export default function App() {
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [paymentComplete, setPaymentComplete] = useState(false);
-  const [seats] = useState(generateSeats());
+  const [seats, setSeats] = useState([]);
 
   const handleMovieSelect = (movie) => {
     setSelectedMovie(movie);
@@ -89,6 +79,10 @@ export default function App() {
     setSelectedTime("");
     setSelectedSeats([]);
     setPaymentComplete(false);
+
+    // Filtrar y establecer la distribución de asientos de la película seleccionada
+    const movieSeats = seatsData.find((data) => data.movieId === movie.id);
+    setSeats(movieSeats ? movieSeats.rows : []);
   };
 
   const handleSeatSelect = (seatId) => {
@@ -138,6 +132,7 @@ export default function App() {
             </CardFooter>
           </Card>
         ))}
+        <Usuario />
       </div>
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="bg-[#4d1a1a] text-[#f5e6e6] border-[#801515]">
@@ -180,15 +175,9 @@ export default function App() {
                       <SelectValue placeholder="Selecciona una fecha" />
                     </SelectTrigger>
                     <SelectContent className="bg-[#3c1414] text-[#f5e6e6] border-[#801515]">
-                      <SelectItem value="2023-10-06">
-                        6 de Octubre, 2023
-                      </SelectItem>
-                      <SelectItem value="2023-10-07">
-                        7 de Octubre, 2023
-                      </SelectItem>
-                      <SelectItem value="2023-10-08">
-                        8 de Octubre, 2023
-                      </SelectItem>
+                      <SelectItem value="2023-10-06">6 de Octubre, 2023</SelectItem>
+                      <SelectItem value="2023-10-07">7 de Octubre, 2023</SelectItem>
+                      <SelectItem value="2023-10-08">8 de Octubre, 2023</SelectItem>
                     </SelectContent>
                   </Select>
                 </TabsContent>
@@ -214,9 +203,7 @@ export default function App() {
                       {seats.map((row) => (
                         <React.Fragment key={row.row}>
                           <div className="flex items-center justify-end mr-2">
-                            <span className="font-bold text-[#ff9999]">
-                              {row.row}
-                            </span>
+                            <span className="font-bold text-[#ff9999]">{row.row}</span>
                           </div>
                           {row.seats.map((seat) => (
                             <button
@@ -261,29 +248,12 @@ export default function App() {
           )}
         </DialogContent>
       </Dialog>
-      {paymentComplete && selectedMovie && (
-        <Dialog open={paymentComplete} onOpenChange={setPaymentComplete}>
-          <DialogContent className="bg-[#4d1a1a] text-[#f5e6e6] border-[#801515] max-w-md">
-            <DialogHeader>
-              <DialogTitle className="text-[#ff9999]">
-                Boletos Generados
-              </DialogTitle>
-              <DialogDescription className="text-[#d68f8f]">
-                ¡Tu compra ha sido completada! Aquí están los detalles de tu
-                reserva:
-                <p className="mt-2">
-                  <strong>Pelicula:</strong> {selectedMovie.title}
-                  <br />
-                  <strong>Fecha:</strong> {selectedDate}
-                  <br />
-                  <strong>Hora:</strong> {selectedTime}
-                  <br />
-                  <strong>Asientos:</strong> {selectedSeats.join(", ")}
-                </p>
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
+      {paymentComplete && (
+        <div className="fixed bottom-10 right-10 bg-[#2c0a0a] p-4 rounded-md shadow-md">
+          <p className="text-[#ff9999] font-semibold">
+            ¡Pago completado! ¡Tus boletos han sido generados!
+          </p>
+        </div>
       )}
     </div>
   );
